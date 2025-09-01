@@ -61,5 +61,5 @@ module tt_um_SNPU (
   funky_rnd rnd16 (.G(ui_in[0]),.R(uio_out[6]));
   funky_rnd rnd17 (.G(ui_in[0]),.R(uio_out[7]));
 
-  wire _unused = &{clk,rst_n,ena, 1'b0};
+  wire _unused = &{uio_in,clk,rst_n,ena, 1'b0};
 endmodule
