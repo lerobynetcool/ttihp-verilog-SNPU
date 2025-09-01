@@ -90,8 +90,8 @@ module tt_um_SNPU (
   reg [10:0] players_nigonitude;
 
   // stored state for outputs
-  reg [7:0] reg_uio
-  reg [7:0] reg_uo
+  reg [7:0] reg_uio;
+  reg [7:0] reg_uo;
 
   wire [2:0] op_code;
   assign op_code = ui_in[7:5];  // Use the top 3 bits of A to determine the operation
@@ -103,8 +103,8 @@ module tt_um_SNPU (
       N_discard <= 0 ; // cf [board game state]
       // players_party <= 0; // TODO
       // players_nigonitude<=0; // TODO
-      reg_uio <=0 // TODO : I think we don't care
-      reg_uo  <=0 // TODO : I think we don't care
+      reg_uio <=0; // TODO : I think we don't care
+      reg_uo  <=0; // TODO : I think we don't care
     end else case (op_code)
       // 3'b000: uo_out = A + B;           // Addition
       // 3'b001: uo_out = A - B;           // Subtraction
