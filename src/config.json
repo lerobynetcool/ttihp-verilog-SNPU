@@ -37,6 +37,8 @@
   "//": "!!! DO NOT CHANGE ANYTHING BELOW THIS POINT !!!",
   "//": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
 
+  "PL_MAX_PHI_COEFFICIENT": 1.0,
+
   "//": "Save some time",
   "RUN_KLAYOUT_XOR": 0,
   "RUN_KLAYOUT_DRC": 0,
