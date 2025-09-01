@@ -5,6 +5,27 @@
 
 `default_nettype none
 
+// type: nand2 
+`timescale 1ns/10ps
+`celldefine
+module sg13g2_nand2_1 (Y, A, B);
+	output Y;
+	input A, B;
+
+	// Function
+	wire int_fwire_0;
+
+	and (int_fwire_0, A, B);
+	not (Y, int_fwire_0);
+
+	// Timing
+	specify
+		(A => Y) = 0;
+		(B => Y) = 0;
+	endspecify
+endmodule
+`endcelldefine
+
 // module nand_latch (
 //   input wire S,
 //   input wire R,
