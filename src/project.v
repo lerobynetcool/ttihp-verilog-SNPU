@@ -63,8 +63,8 @@ endmodule
 // === MAIN MODULE ===
 // ===================
 
-// tt_SNPU stands for "Tiny Tapeout - Secret Nigon Processing Unit"
-module tt_SNPU (
+// tt_um_SNPU stands for "Tiny Tapeout - Secret Nigon Processing Unit"
+module tt_um_SNPU (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
