@@ -69,71 +69,87 @@ module tt_um_SNPU (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
-    output reg  [7:0] uio_out,  // IOs: Output path
+    output wire [7:0] uio_out,  // IOs: Output path
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
     input  wire       ena,      // always 1 when the design is powered, so you can ignore it
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
+  assign uio_oe  = 1; // use io pins as outputs
 
-  // board game state
-  reg [16:0] policies; // 17 policy cards with 6x 0 and 11x 1.
-  reg [5:0] N_stack;   // initialized to 17 : number of policies in the main stack
-  reg [5:0] N_discard; // initialized to 0  : number of cards that are in the hand of a player
-  // policies  : [ 0 1 1 0 1 1 1║0 1 0 1 1┊0 1 0 1 1 ]
-  // N_stack   : ═══════════════╝         ┊           
-  // N_discard :                └─────────┘           
-  //              [STACK]        [DISCARD] [ BOARD ]
+  funky_rnd rnd00 (.G(ui_in[0]),.R(uo_out[0]));
+  funky_rnd rnd01 (.G(ui_in[0]),.R(uo_out[1]));
+  funky_rnd rnd02 (.G(ui_in[0]),.R(uo_out[2]));
+  funky_rnd rnd03 (.G(ui_in[0]),.R(uo_out[3]));
+  funky_rnd rnd04 (.G(ui_in[0]),.R(uo_out[4]));
+  funky_rnd rnd05 (.G(ui_in[0]),.R(uo_out[5]));
+  funky_rnd rnd06 (.G(ui_in[0]),.R(uo_out[6]));
+  funky_rnd rnd07 (.G(ui_in[0]),.R(uo_out[7]));
 
-  // role distribution for game initialization
-  reg [10:0] players_party;
-  reg [10:0] players_nigonitude;
+  funky_rnd rnd10 (.G(ui_in[0]),.R(uio_out[0]));
+  funky_rnd rnd11 (.G(ui_in[0]),.R(uio_out[1]));
+  funky_rnd rnd12 (.G(ui_in[0]),.R(uio_out[2]));
+  funky_rnd rnd13 (.G(ui_in[0]),.R(uio_out[3]));
+  funky_rnd rnd14 (.G(ui_in[0]),.R(uio_out[4]));
+  funky_rnd rnd15 (.G(ui_in[0]),.R(uio_out[5]));
+  funky_rnd rnd16 (.G(ui_in[0]),.R(uio_out[6]));
+  funky_rnd rnd17 (.G(ui_in[0]),.R(uio_out[7]));
 
-  // reg [7:0] reg_output;
+  wire _unused = &{clk,rst_n,ena, 1'b0};
 
-  wire [2:0] op_code;
-  assign op_code = ui_in[7:5];  // Use the top 3 bits of A to determine the operation
+  // assign uio_oe  = 0; // use io pins as inputs, we don't need that much outputs anyway
 
-  // always @(*) begin
-  always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      policies  <= 17'b00000000000111111; // cf [board game state]
-      N_stack   <= 17; // cf [board game state]
-      N_discard <= 0 ; // cf [board game state]
-      // players_party <= 0; // TODO
-      // players_nigonitude<=0; // TODO
-      // reg_output <=0; // TODO : I think we don't care
-      uio_out <=0; // TODO : I think we don't care
-    end
-    // else case (op_code)
-    //   // 3'b000: uo_out = A + B;           // Addition
-    //   // 3'b001: uo_out = A - B;           // Subtraction
-    //   // 3'b010: uo_out = A & B;           // Bitwise AND
-    //   // 3'b011: uo_out = A | B;           // Bitwise OR
-    //   // 3'b100: uo_out = A ^ B;           // Bitwise XOR
-    //   // 3'b101: uo_out = ~A;              // Bitwise NOT of A
-    //   // 3'b110: uo_out = B;               // Pass through B
-    //   // 3'b111: uo_out = A;               // Pass through A
-    //   default: uo_out = 8'b00000000;
-    // endcase
-  end
+  // // board game state
+  // reg [16:0] policies; // 17 policy cards with 6x 0 and 11x 1.
+  // reg [5:0] N_stack;   // initialized to 17 : number of policies in the main stack
+  // reg [5:0] N_discard; // initialized to 0  : number of cards that are in the hand of a player
+  // // policies  : [ 0 1 1 0 1 1 1║0 1 0 1 1┊0 1 0 1 1 ]
+  // // N_stack   : ═══════════════╝         ┊           
+  // // N_discard :                └─────────┘           
+  // //              [STACK]        [DISCARD] [ BOARD ]
 
-  // list of operations :
-  // - OP_reset() : policies=00000000000111111, N_stack=17, N_hand=0, N_discard = 0
-  // - OP_player_reset(player_count) : initialize player array to 000...01...1 and another array with 000...01, they will be shuffled together
-  // - OP_player_get(index)
-  // - OP_shuffle() : shuffles all bits in [0..(N_stack+N_discard)] ; might need to run multiple time to get an actual shuffle ; only works if N_hand==0
-  // - OP_hand_display(index) : shows the card at N_stack-1-index
-  // - OP_hand_discard(index) : shift all registers from N_stack-1-index etc...
-  // - OP_hand_play(index)    : shift all registers from N_stack-1-index etc...
-  // - OP_board_display() : outputs two 4 bit integers (how many ZEROS and how many ONES inside the BOARD section)
+  // // role distribution for game initialization
+  // reg [10:0] players_party;
+  // reg [10:0] players_nigonitude;
+
+  // reg [7:0] reg_outputA; // internal state for output
+  // assign uo_out = reg_outputA;
+
+  // // list of operations :
+  // localparam OP_RSET = 3'b000; // - OP_reset()                    : policies=00000000000111111, N_stack=17, N_hand=0, N_discard = 0
+  // localparam OP_PLRS = 3'b001; // - OP_player_reset(player_count) : initialize player array to 000...01...1 and another array with 000...01, they will be shuffled together
+  // localparam OP_PLGT = 3'b010; // - OP_player_get(index)          : shows if player is type 11 (liberal) or 10 (Nigon) or 00 (nigonist)
+  // localparam OP_SHFF = 3'b011; // - OP_shuffle()                  : shuffles some bits in [0..(N_stack+N_discard)] ; need to run many time to get an actual shuffle
+  // localparam OP_HDSP = 3'b100; // - OP_hand_display(index)        : shows the card at N_stack-1-index
+  // localparam OP_HDSC = 3'b101; // - OP_hand_discard(index)        : shift all registers from N_stack-1-index etc...
+  // localparam OP_HPLY = 3'b110; // - OP_hand_play(index)           : shift all registers from N_stack-1-index etc...
+  // localparam OP_BDSP = 3'b111; // - OP_board_display()            : outputs two 4 bit integers (how many ZEROS and how many ONES inside the BOARD section)
+
+  // wire [2:0] op_code;
+  // assign op_code = ui_in[7:5];  // Use the top 3 bits of A to determine the operation
+
+  // always @(posedge clk or negedge rst_n) begin
+  //   // reg_outputA <= op_code;
+  //   if (!rst_n || op_code == OP_RSET) begin
+  //     policies  <= 17'b00000000000111111; // cf [board game state]
+  //     N_stack   <= 17; // cf [board game state]
+  //     N_discard <= 0 ; // cf [board game state]
+  //     // players_party <= 0; // TODO
+  //     // players_nigonitude<=0; // TODO
+  //     // reg_outputA <=0;
+  //   end else case (op_code)
+  //     OP_PLRS: reg_outputA <= OP_PLRS; // TODO
+  //     OP_PLGT: reg_outputA <= OP_PLGT; // TODO
+  //     OP_SHFF: reg_outputA <= OP_SHFF; // TODO
+  //     OP_HDSP: reg_outputA <= OP_HDSP; // TODO
+  //     OP_HDSC: reg_outputA <= OP_HDSC; // TODO
+  //     OP_HPLY: reg_outputA <= OP_HPLY; // TODO
+  //     OP_BDSP: reg_outputA <= OP_BDSP; // TODO
+  //     default: reg_outputA = 8'b00000000;
+  //   endcase
+  // end
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  // assign uio_out = reg_output;
-  // assign uio_out = 0;
-  assign uio_oe  = 0;
-
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+  // wire _unused = &{ena, 1'b0};
 endmodule
