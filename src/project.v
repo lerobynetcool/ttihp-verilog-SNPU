@@ -76,6 +76,7 @@ module tt_um_SNPU (
     input  wire       rst_n     // reset_n - low to reset
 );
 
+  // board game state
   reg [16:0] policies; // 17 policy cards with 6x 0 and 11x 1.
   reg [5:0] N_stack;   // initialized to 17 : number of policies in the main stack
   reg [5:0] N_discard; // initialized to 0  : number of cards that are in the hand of a player
@@ -84,8 +85,38 @@ module tt_um_SNPU (
   // N_discard :                └─────────┘           
   //              [STACK]        [DISCARD] [ BOARD ]
 
+  // role distribution for game initialization
   reg [10:0] players_party;
   reg [10:0] players_nigonitude;
+
+  // stored state for outputs
+  reg [7:0] reg_uio
+  reg [7:0] reg_uo
+
+  wire [2:0] op_code;
+  assign op_code = ui_in[7:5];  // Use the top 3 bits of A to determine the operation
+  // always @(*) begin
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      policies  <= 17'b00000000000111111; // cf [board game state]
+      N_stack   <= 17; // cf [board game state]
+      N_discard <= 0 ; // cf [board game state]
+      // players_party <= 0; // TODO
+      // players_nigonitude<=0; // TODO
+      reg_uio <=0 // TODO : I think we don't care
+      reg_uo  <=0 // TODO : I think we don't care
+    end else case (op_code)
+      // 3'b000: uo_out = A + B;           // Addition
+      // 3'b001: uo_out = A - B;           // Subtraction
+      // 3'b010: uo_out = A & B;           // Bitwise AND
+      // 3'b011: uo_out = A | B;           // Bitwise OR
+      // 3'b100: uo_out = A ^ B;           // Bitwise XOR
+      // 3'b101: uo_out = ~A;              // Bitwise NOT of A
+      // 3'b110: uo_out = B;               // Pass through B
+      // 3'b111: uo_out = A;               // Pass through A
+      default: uo_out = 8'b00000000;
+    endcase
+  end
 
   // list of operations :
   // - OP_reset() : policies=00000000000111111, N_stack=17, N_hand=0, N_discard = 0
