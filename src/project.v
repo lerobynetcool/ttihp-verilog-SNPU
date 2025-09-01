@@ -78,27 +78,23 @@ module tt_um_SNPU (
 
   reg [16:0] policies; // 17 policy cards with 6x 0 and 11x 1.
   reg [5:0] N_stack;   // initialized to 17 : number of policies in the main stack
-  reg [5:0] N_hand;    // initialized to 0  : number of cards that are in the hand of a player
   reg [5:0] N_discard; // initialized to 0  : number of cards that are in the hand of a player
-  // N_hand    :          ┌─────┐                     
-  // policies  : [ 0 1 1 0┊1 1 1║0 1 0 1 1┊0 1 0 1 1 ]
+  // policies  : [ 0 1 1 0 1 1 1║0 1 0 1 1┊0 1 0 1 1 ]
   // N_stack   : ═══════════════╝         ┊           
   // N_discard :                └─────────┘           
-  //              [STACK] [HAND] [DISCARD] [ BOARD ]
+  //              [STACK]        [DISCARD] [ BOARD ]
 
   reg [10:0] players_party;
   reg [10:0] players_nigonitude;
-
 
   // list of operations :
   // - OP_reset() : policies=00000000000111111, N_stack=17, N_hand=0, N_discard = 0
   // - OP_player_reset(player_count) : initialize player array to 000...01...1 and another array with 000...01, they will be shuffled together
   // - OP_player_get(index)
   // - OP_shuffle() : shuffles all bits in [0..(N_stack+N_discard)] ; might need to run multiple time to get an actual shuffle ; only works if N_hand==0
-  // - OP_hand_pick() : N_hand = 3
-  // - OP_hand_discard(index) : shift all registers from N_stack-index etc...
-  // - OP_hand_play(index)    : shift all registers from N_stack-index etc...
-  // - OP_hand_display() : shows up to 3 cards encoded as [00 = POLICY_0; 11 = POLICY_1; 01 and 10 = NO_CARD]
+  // - OP_hand_display(index) : shows the card at N_stack-1-index
+  // - OP_hand_discard(index) : shift all registers from N_stack-1-index etc...
+  // - OP_hand_play(index)    : shift all registers from N_stack-1-index etc...
   // - OP_board_display() : outputs two 4 bit integers (how many ZEROS and how many ONES inside the BOARD section)
 
   // All output pins must be assigned. If not used, assign to 0.
