@@ -105,17 +105,18 @@ module tt_um_SNPU (
       // players_nigonitude<=0; // TODO
       reg_uio <=0; // TODO : I think we don't care
       reg_uo  <=0; // TODO : I think we don't care
-    end else case (op_code)
-      // 3'b000: uo_out = A + B;           // Addition
-      // 3'b001: uo_out = A - B;           // Subtraction
-      // 3'b010: uo_out = A & B;           // Bitwise AND
-      // 3'b011: uo_out = A | B;           // Bitwise OR
-      // 3'b100: uo_out = A ^ B;           // Bitwise XOR
-      // 3'b101: uo_out = ~A;              // Bitwise NOT of A
-      // 3'b110: uo_out = B;               // Pass through B
-      // 3'b111: uo_out = A;               // Pass through A
-      default: uo_out = 8'b00000000;
-    endcase
+    end
+    // else case (op_code)
+    //   // 3'b000: uo_out = A + B;           // Addition
+    //   // 3'b001: uo_out = A - B;           // Subtraction
+    //   // 3'b010: uo_out = A & B;           // Bitwise AND
+    //   // 3'b011: uo_out = A | B;           // Bitwise OR
+    //   // 3'b100: uo_out = A ^ B;           // Bitwise XOR
+    //   // 3'b101: uo_out = ~A;              // Bitwise NOT of A
+    //   // 3'b110: uo_out = B;               // Pass through B
+    //   // 3'b111: uo_out = A;               // Pass through A
+    //   default: uo_out = 8'b00000000;
+    // endcase
   end
 
   // list of operations :
