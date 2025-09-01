@@ -76,32 +76,30 @@ module tt_um_SNPU (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // // TODO : initialize with P_stack=b'0_0000_0000_0011_1111
-  // reg [17:0] P_stack; // a list of all Policy cards in the main stack (contains 6x 1 and 11x 0)
-  // reg [5:0]  P_stack_N; // list length (5-bit integer)
+  reg [16:0] policies; // 17 policy cards with 6x 0 and 11x 1.
+  reg [5:0] N_stack;   // initialized to 17 : number of policies in the main stack
+  reg [5:0] N_hand;    // initialized to 0  : number of cards that are in the hand of a player
+  reg [5:0] N_discard; // initialized to 0  : number of cards that are in the hand of a player
+  // N_hand    :          ┌─────┐                     
+  // policies  : [ 0 1 1 0┊1 1 1║0 1 0 1 1┊0 1 0 1 1 ]
+  // N_stack   : ═══════════════╝         ┊           
+  // N_discard :                └─────────┘           
+  //              [STACK] [HAND] [DISCARD] [ BOARD ]
 
-  // reg [17:0] P_discard; // list of Policy cards in the discard pile
-  // reg [5:0]  P_discard_N; // list length (5-bit integer)
+  reg [10:0] players_party;
+  reg [10:0] players_nigonitude;
 
-  // reg [17:0] P_board; // list of Policy cards on the board
-  // reg [5:0]  P_board_N; // list length (5-bit integer)
 
-  // TODO :
-  // OP_reset : reset the board
-  // OP_discard :
-  // OP_shuffle : merge P_discard with P_stack ; then shuffle P_stack
-
-  // OP_role_distribution : for a given count of players
-
-  // actions we need:
-  // peak 3 cards
-  // peak 2 cards
-  // discard card #0 #1 or #2 from P_stack
-  // play    card #0 #1 or #2 from P_stack
-
-  // read
-
-  // role distribution
+  // list of operations :
+  // - OP_reset() : policies=00000000000111111, N_stack=17, N_hand=0, N_discard = 0
+  // - OP_player_reset(player_count) : initialize player array to 000...01...1 and another array with 000...01, they will be shuffled together
+  // - OP_player_get(index)
+  // - OP_shuffle() : shuffles all bits in [0..(N_stack+N_discard)] ; might need to run multiple time to get an actual shuffle ; only works if N_hand==0
+  // - OP_hand_pick() : N_hand = 3
+  // - OP_hand_discard(index) : shift all registers from N_stack-index etc...
+  // - OP_hand_play(index)    : shift all registers from N_stack-index etc...
+  // - OP_hand_display() : shows up to 3 cards encoded as [00 = POLICY_0; 11 = POLICY_1; 01 and 10 = NO_CARD]
+  // - OP_board_display() : outputs two 4 bit integers (how many ZEROS and how many ONES inside the BOARD section)
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
