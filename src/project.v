@@ -13,7 +13,8 @@ module nand_latch (
   output wire Q,
   output wire Qn
 )
-  wire q_int, qn_int;
+  wire q_int;
+  wire qn_int;
   assign q_int  = ~(S & qn_int);
   assign qn_int = ~(R & q_int);
   assign Q = q_int;
