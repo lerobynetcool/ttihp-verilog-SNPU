@@ -20,17 +20,17 @@ module nand_latch (
   assign Qn = qn_int;
 endmodule
 
-// module funky_rnd(
-//   input wire G, // generator state : 0 = random mode, 1 = freeze
-//   output wire R // output random value between 0 or 1
-// )
-//   nand_latch my_latch (
-//     .S(G), // !!! normally, S=R=0 is banned, but here I want Q to be random
-//     .R(G), // !!! so it's all good... maybe ? I don't know electronics enough.
-//     .Q(R),
-//     // .Qn(...)
-//   );
-// endmodule
+module funky_rnd(
+  input wire G, // generator state : 0 = random mode, 1 = freeze
+  output wire R // output random value between 0 or 1
+);
+  nand_latch my_latch (
+    .S(G), // !!! normally, S=R=0 is banned, but here I want Q to be random
+    .R(G), // !!! so it's all good... maybe ? I don't know electronics enough.
+    .Q(R),
+    // .Qn(...)
+  );
+endmodule
 
 // module pseudo_rnd(
 //   input wire clk,
