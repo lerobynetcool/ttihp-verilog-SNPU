@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        "Hi"      # Project title
+  title:        "latch random"      # Project title
   author:       "Laurent Roro"      # Your name
   discord:      "blargosaure"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "hello world project"      # One line description of what your project does
+  description:  "random value generation with a latch"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
@@ -23,34 +23,34 @@ project:
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
-  ui[0]: "ui0"
-  ui[1]: "ui1"
-  ui[2]: "ui2"
-  ui[3]: "ui3"
-  ui[4]: "ui4"
-  ui[5]: "ui5"
-  ui[6]: "ui6"
-  ui[7]: "ui7"
+  ui[0]: "freeze"
+  ui[1]: "unused_1"
+  ui[2]: "unused_2"
+  ui[3]: "unused_3"
+  ui[4]: "unused_4"
+  ui[5]: "unused_5"
+  ui[6]: "unused_6"
+  ui[7]: "unused_7"
 
   # Outputs
-  uo[0]: "uo0"
-  uo[1]: "uo1"
-  uo[2]: "uo2"
-  uo[3]: "uo3"
-  uo[4]: "uo4"
-  uo[5]: "uo5"
-  uo[6]: "uo6"
-  uo[7]: "uo7"
+  uo[0]: "pssshhh"
+  uo[1]: "randooom"
+  uo[2]: "BRRRRRR"
+  uo[3]: "pshshshshsh"
+  uo[4]: "lottery_winning_number"
+  uo[5]: "0or1"
+  uo[6]: "1or0"
+  uo[7]: "maybe"
 
   # Bidirectional pins
-  uio[0]: "uio0"
-  uio[1]: "uio1"
-  uio[2]: "uio2"
-  uio[3]: "uio3"
-  uio[4]: "uio4"
-  uio[5]: "uio5"
-  uio[6]: "uio6"
-  uio[7]: "uio7"
+  uio[0]: "sometimes_true"
+  uio[1]: "noyesnoyesnoyes"
+  uio[2]: "asdgfhdskaghk"
+  uio[3]: "error"
+  uio[4]: "defined_as_undefined"
+  uio[5]: "often_false"
+  uio[6]: "noise"
+  uio[7]: "trump_tarifs"
 
 # Do not change!
 yaml_version: 6
