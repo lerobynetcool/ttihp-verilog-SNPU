@@ -1,3 +1,4 @@
+*.ts
 .DS_Store
 .idea
 *.vcd
