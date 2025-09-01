@@ -5,6 +5,7 @@
 
 `default_nettype none
 
+// https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v
 // type: nand2 
 `timescale 1ns/10ps
 `celldefine
@@ -25,19 +26,6 @@ module sg13g2_nand2_1 (Y, A, B);
 	endspecify
 endmodule
 `endcelldefine
-
-// module nand_latch (
-//   input wire S,
-//   input wire R,
-//   output wire Q,
-//   output wire Qn
-// );
-//   wire q_int, qn_int;
-//   assign q_int  = ~(S & qn_int);
-//   assign qn_int = ~(R & q_int);
-//   assign Q = q_int;
-//   assign Qn = qn_int;
-// endmodule
 
 module nand_latch (
   input wire S,
